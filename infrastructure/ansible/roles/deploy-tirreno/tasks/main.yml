@@ -1,0 +1,52 @@
+---
+- name: Deploy Tirreno Security Platform
+  block:
+    - name: Ensure Docker is installed
+      package:
+        name: docker
+        state: present
+
+    - name: Create Docker network
+      community.docker.docker_network:
+        name: "{{ tirreno_network }}"
+        state: present
+
+    - name: Run PostgreSQL container
+      community.docker.docker_container:
+        name: tirreno-db
+        image: "postgres:{{ postgres_version }}"
+        restart_policy: always
+        env:
+          POSTGRES_USER: "{{ db_user }}"
+          POSTGRES_PASSWORD: "{{ db_password }}"
+          POSTGRES_DB: "{{ db_name }}"
+        volumes:
+          - /opt/tirreno/db:/var/lib/postgresql/data
+        networks:
+          - name: "{{ tirreno_network }}"
+
+    - name: Run Tirreno app container
+      community.docker.docker_container:
+        name: tirreno-app
+        image: "{{ tirreno_image }}"
+        restart_policy: always
+        published_ports:
+          - "{{ tirreno_port }}:80"
+        volumes:
+          - tirreno-volume:/var/www/html
+        networks:
+          - name: "{{ tirreno_network }}"
+  vars:
+    tirreno_port: 8000
+    db_user: tirreno
+    db_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34626130666630633339306538353635306335346336626261336637336264616337623737353566
+          3135333936343666303337373363333162343236656337340a653163663934623566333932336332
+          37316439343438626539313665343063316636346239646262653330636462616562343238333130
+          3433613739336432370a363639376235633937343536653634633963393039333430663538626539
+          6136
+    db_name: tirreno
+    postgres_version: "15"
+    tirreno_image: "tirreno/tirreno:latest"
+    tirreno_network: tirreno-net
