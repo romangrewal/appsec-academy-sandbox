@@ -1,1 +1,1 @@
-# appsec-academy-course
+# appsec-academy-sandbox
