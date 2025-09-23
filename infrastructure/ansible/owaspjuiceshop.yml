@@ -1,0 +1,5 @@
+- name: Deploy OWASP Juice Shop
+  hosts: localhost
+  become: yes
+  roles:
+    - owasp-juice-shop

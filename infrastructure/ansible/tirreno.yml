@@ -1,5 +1,5 @@
-- name: Initialize Kubernetes Master
+- name: Deploy Tirreno
   hosts: localhost
   become: yes
   roles:
-    - deploy-tirreno
+    - tirreno

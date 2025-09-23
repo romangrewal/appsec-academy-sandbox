@@ -1,0 +1,15 @@
+---
+- name: Pull OWASP Juice Shop Docker image
+  community.docker.docker_image:
+    name: bkimminich/juice-shop
+    source: pull
+    state: present
+
+- name: Run OWASP Juice Shop container
+  community.docker.docker_container:
+    name: juice-shop
+    image: bkimminich/juice-shop
+    ports:
+      - "3000:3000"
+    state: started
+    restart_policy: always

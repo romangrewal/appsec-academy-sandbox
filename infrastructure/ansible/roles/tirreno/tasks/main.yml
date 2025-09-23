@@ -1,11 +1,6 @@
 ---
 - name: Deploy Tirreno Security Platform
   block:
-    - name: Ensure Docker is installed
-      package:
-        name: docker
-        state: present
-
     - name: Create Docker network
       community.docker.docker_network:
         name: "{{ tirreno_network }}"
