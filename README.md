@@ -2,30 +2,30 @@
 
 ## Application Security
 ### SIEM / Security Analytics
-Tirreno
+Tirreno  
 https://www.tirreno.com
 
 ### WAF
-BunkerWeb
+BunkerWeb  
 https://github.com/bunkerity/bunkerweb
 
 ### SAST
-SonarQube Community Build
+SonarQube Community Build  
 https://www.sonarsource.com/open-source-editions/sonarqube-community-edition
 
 ### DAST
-Zed Attack Proxy
+Zed Attack Proxy  
 https://www.zaproxy.org
 
 ## Infrastructure
 ### CI / CD
-Jenkins
+Jenkins  
 https://www.jenkins.io
 
 ### Orchestration
-Ansible
+Ansible  
 https://www.redhat.com/en/ansible-collaborative
 
 ### Containerization
-Docker
+Docker  
 https://www.docker.com
