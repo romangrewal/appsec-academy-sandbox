@@ -1,6 +1,10 @@
 # appsec-academy-sandbox
 
 ## Application Security
+### Vulnerable Web Application
+OWASP Juice Shop  
+https://owasp.org/www-project-juice-shop
+
 ### SIEM / Security Analytics
 Tirreno  
 https://www.tirreno.com
