@@ -26,6 +26,10 @@ https://www.zaproxy.org
 Jenkins  
 https://www.jenkins.io
 
+### Development Environment
+Packer  
+https://developer.hashicorp.com/packer
+
 ### Orchestration
 Ansible  
 https://www.redhat.com/en/ansible-collaborative
