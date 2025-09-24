@@ -27,8 +27,8 @@ Jenkins
 https://www.jenkins.io
 
 ### Development Environment
-Packer  
-https://developer.hashicorp.com/packer
+Vagrant   
+https://developer.hashicorp.com/vagrant
 
 ### Orchestration
 Ansible  
