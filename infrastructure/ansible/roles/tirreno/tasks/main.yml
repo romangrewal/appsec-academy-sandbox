@@ -2,12 +2,12 @@
 - name: Deploy Tirreno Security Platform
   block:
     - name: Create Docker network
-      community.docker.docker_network:
+      containers.podman.podman_network:
         name: "{{ tirreno_network }}"
         state: present
 
     - name: Run PostgreSQL container
-      community.docker.docker_container:
+      containers.podman.podman_container:
         name: tirreno-db
         image: "postgres:{{ postgres_version }}"
         restart_policy: always
@@ -21,7 +21,7 @@
           - name: "{{ tirreno_network }}"
 
     - name: Run Tirreno app container
-      community.docker.docker_container:
+      containers.podman.podman_container:
         name: tirreno-app
         image: "{{ tirreno_image }}"
         restart_policy: always
