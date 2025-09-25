@@ -2,7 +2,11 @@ Vagrant.configure("2") do |config|
   config.vm.box = "centos/stream9"
   config.vm.box_version = "20250922.0"
 
-  config.vm.synced_folder "/mnt/c/vaultpass", "/home/vagrant/ansible"
+  config.vm.provision "shell", inline: <<-SHELL
+    cp /vagrant/vaultpass /home/vagrant/vaultpass
+    chmod 644 /home/vagrant/vaultpass
+  SHELL
+
   config.vm.provision "shell", inline: <<-SHELL
     echo 'Defaults:vagrant !requiretty' | sudo tee /etc/sudoers.d/vagrant-nopty
     echo 'vagrant ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/vagrant-nopasswd
@@ -32,6 +36,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "infrastructure/ansible/tirreno.yml"
     ansible.inventory_path = "infrastructure/ansible/inventory.ini"
     ansible.limit = "localhost.localdomain"
+    ansible.vault_password_file = "/home/vagrant/vaultpass"
   end
 
 end

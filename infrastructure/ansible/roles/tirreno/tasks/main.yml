@@ -6,10 +6,23 @@
         name: "{{ tirreno_network }}"
         state: present
 
+    - name: Create tirreno Podman network
+      containers.podman.podman_network:
+        name: "{{ tirreno_network }}"
+        state: present
+
+    - name: Ensure /opt/tirreno/db exists
+      ansible.builtin.file:
+        path: /opt/tirreno/db
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
     - name: Run PostgreSQL container
       containers.podman.podman_container:
         name: tirreno-db
-        image: "postgres:{{ postgres_version }}"
+        image: "docker.io/postgres:{{ postgres_version }}"
         restart_policy: always
         env:
           POSTGRES_USER: "{{ db_user }}"
@@ -17,20 +30,19 @@
           POSTGRES_DB: "{{ db_name }}"
         volumes:
           - /opt/tirreno/db:/var/lib/postgresql/data
-        networks:
-          - name: "{{ tirreno_network }}"
+        network: "{{ tirreno_network }}"
+
 
     - name: Run Tirreno app container
       containers.podman.podman_container:
         name: tirreno-app
-        image: "{{ tirreno_image }}"
+        image: "docker.io/{{ tirreno_image }}"
         restart_policy: always
         published_ports:
           - "{{ tirreno_port }}:80"
         volumes:
           - tirreno-volume:/var/www/html
-        networks:
-          - name: "{{ tirreno_network }}"
+        network: "{{ tirreno_network }}"
   vars:
     tirreno_port: 8000
     db_user: tirreno
