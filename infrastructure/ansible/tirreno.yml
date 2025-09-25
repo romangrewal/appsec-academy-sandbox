@@ -1,5 +1,5 @@
 - name: Deploy Tirreno
-  hosts: localhost
+  hosts: localhost.localdomain
   become: yes
   roles:
     - tirreno
