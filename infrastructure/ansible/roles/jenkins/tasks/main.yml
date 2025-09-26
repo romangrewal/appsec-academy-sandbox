@@ -1,0 +1,49 @@
+---
+- name: Deploy Jenkins CI/CD Container with Podman on CentOS Stream 9
+  block:
+    - name: Ensure Podman is installed
+      ansible.builtin.package:
+        name: podman
+        state: present
+
+    - name: Create persistent volume directory for Jenkins data
+      ansible.builtin.file:
+        path: "{{ jenkins_home_dir }}"
+        state: directory
+        owner: 1000 # Default user inside the Jenkins container
+        group: 1000 # Default group inside the Jenkins container
+        mode: '0755'
+
+    - name: Ensure port 8080/tcp is open
+      ansible.posix.firewalld:
+        port: 8080/tcp
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Run Jenkins container with Podman
+      containers.podman.podman_container:
+        name: "{{ jenkins_container_name }}"
+        image: "docker.io/{{ jenkins_image }}"
+        state: started
+        restart_policy: always
+        ports:
+          - "{{ jenkins_host_port }}:{{ jenkins_target_port }}"
+        volume:
+          - "{{ jenkins_home_dir }}:/var/jenkins_home"
+        security_opt:
+          - label=disable # Required for container file label separation issues on SELinux
+          # Alternatively, manage SELinux booleans: -Z container_t
+
+    - name: Wait for Jenkins to start up and listen on port
+      ansible.builtin.wait_for:
+        port: "{{ jenkins_host_port }}"
+        timeout: 180
+        host: "0.0.0.0" # Wait on the container host
+        state: started
+  vars:
+    jenkins_home_dir: /var/lib/jenkins
+    jenkins_image: jenkins/jenkins:lts
+    jenkins_container_name: jenkins-ci
+    jenkins_host_port: 8080 # Port to access Jenkins web UI
+    jenkins_target_port: 8080

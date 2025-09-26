@@ -1,0 +1,5 @@
+- name: Deploy Jenkins
+  hosts: localhost.localdomain
+  become: yes
+  roles:
+    - jenkins
