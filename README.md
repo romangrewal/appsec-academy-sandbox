@@ -1,4 +1,4 @@
-# appsec-academy-sandbox
+# appsec-academy-sandbox [DEPRECATED]
 
 ## Application Security
 ### Vulnerable Web Application
